@@ -1,0 +1,70 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.get('admin', false) == true;
+    }
+
+    function isNotBanned() {
+       return !isAuthenticated() || request.auth.token.get('banned', false) != true;
+    }
+
+    // Rate Limiting Helper (Conceptual - rules typically check data state)
+    // Checking recent posts would require a "recentPosts" counter on the user doc or similar.
+    // For now, we'll enforce basic structure.
+
+    // JOBS COLLECTION
+    match /jobs/{jobId} {
+      // Anyone logged in can read jobs (could restrict to verified users)
+      allow read: if isAuthenticated();
+      
+      // Create: Auth users, valid data, rate limiting enforced by client/functions or user-metadata check
+      allow create: if isAuthenticated() 
+                    && isNotBanned()
+                    && request.resource.data.keys().hasAll(['title', 'district', 'posterId', 'expiresAt', 'jobTypeNormalized'])
+                    && request.resource.data.posterId == request.auth.uid;
+
+      // Update/Delete: Only Owner or Admin
+      allow update: if isOwner(resource.data.posterId) || isAdmin();
+      allow delete: if isOwner(resource.data.posterId) || isAdmin();
+
+      // APPLICATIONS SUBCOLLECTION
+      match /applications/{applicationId} {
+        // Owner of the job can read applications
+        // Applicant can read their own application
+        allow read: if isAuthenticated() && (
+          get(/databases/$(database)/documents/jobs/$(jobId)).data.posterId == request.auth.uid ||
+          resource.data.applicantId == request.auth.uid
+        );
+
+        // Create: Auth users, must be unique (enforced by ID = uid usually, or checking)
+        // Here we allow creation if the applicantId matches the auth uid
+        allow create: if isAuthenticated() 
+                      && isNotBanned()
+                      && request.resource.data.applicantId == request.auth.uid;
+        
+        // No updates allowed by applicant typically, only status updates by Job Owner
+        allow update: if isAuthenticated() && (
+             get(/databases/$(database)/documents/jobs/$(jobId)).data.posterId == request.auth.uid
+        );
+      }
+    }
+    
+    // USERS COLLECTION (ReadOnly for public profile parts, Editable by owner)
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId) || isAdmin();
+    }
+  }
+}

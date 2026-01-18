@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "352030331822",
+    "project_id": "job-finder-app-7d191",
+    "storage_bucket": "job-finder-app-7d191.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352030331822:android:a226fce64047e30a5d6e3f",
+        "android_client_info": {
+          "package_name": "com.iqraconnect.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS1Tr4jyhCiIe0KmMgyZGTg40o43FqMZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

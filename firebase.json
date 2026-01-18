@@ -1,0 +1,27 @@
+{
+    "functions": {
+        "source": "functions",
+        "runtime": "nodejs20"
+    },
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "job-finder-app-7d191",
+                    "appId": "1:352030331822:android:a226fce64047e30a5d6e3f",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "job-finder-app-7d191",
+                    "configurations": {
+                        "android": "1:352030331822:android:a226fce64047e30a5d6e3f",
+                        "ios": "1:352030331822:ios:f27039d9608f14f55d6e3f",
+                        "web": "1:352030331822:web:099b722105808b615d6e3f"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,55 @@
+{
+    "indexes": [
+        {
+            "collectionGroup": "jobs",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "expiresAt",
+                    "order": "ASCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "jobs",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "state",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "district",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "jobTypeNormalized",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "expiresAt",
+                    "order": "ASCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "jobs",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "district",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "jobTypeNormalized",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "expiresAt",
+                    "order": "ASCENDING"
+                }
+            ]
+        }
+    ],
+    "fieldOverrides": []
+}
