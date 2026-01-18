@@ -17,15 +17,19 @@ class NotificationService {
   static Future<void> initialize(GlobalKey<NavigatorState> navKey) async {
     navigatorKey = navKey;
 
-    // 1. Request Permissions
-    NotificationSettings settings = await _fcm.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    try {
+      // 1. Request Permissions
+      NotificationSettings settings = await _fcm.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
 
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('User granted permission');
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+        debugPrint('User granted permission');
+      }
+    } catch (e) {
+      debugPrint('Error requesting permissions: $e');
     }
 
     // 2. Initialize Local Notifications (for foreground messages)
@@ -38,8 +42,12 @@ class NotificationService {
       initializationSettings,
       onDidReceiveNotificationResponse: (details) {
         if (details.payload != null) {
-          final data = json.decode(details.payload!);
-          _handleMessageNavigation(data);
+          try {
+            final data = json.decode(details.payload!);
+            _handleMessageNavigation(data);
+          } catch (e) {
+            debugPrint('Error parsing notification payload: $e');
+          }
         }
       },
     );
@@ -55,65 +63,90 @@ class NotificationService {
     });
 
     // Check if app was opened from terminated state
-    RemoteMessage? initialMessage = await _fcm.getInitialMessage();
-    if (initialMessage != null) {
-      _handleMessageNavigation(initialMessage.data);
+    try {
+      RemoteMessage? initialMessage = await _fcm.getInitialMessage();
+      if (initialMessage != null) {
+        _handleMessageNavigation(initialMessage.data);
+      }
+    } catch (e) {
+      debugPrint('Error getting initial message: $e');
     }
 
     // 5. Subscribe to Topics
-    await _fcm.subscribeToTopic('new_jobs');
+    try {
+      await _fcm.subscribeToTopic('all_users');
+    } catch (e) {
+      debugPrint('Error subscribing to topic: $e');
+    }
 
     // 6. Save Token
-    await saveTokenToFirestore();
+    try {
+      await saveTokenToFirestore();
+    } catch (e) {
+      debugPrint('Error saving token: $e');
+    }
   }
 
   static Future<void> saveTokenToFirestore() async {
-    String? token = await _fcm.getToken();
-    User? user = FirebaseAuth.instance.currentUser;
+    try {
+      String? token = await _fcm.getToken();
+      User? user = FirebaseAuth.instance.currentUser;
 
-    if (token != null && user != null) {
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-        'fcmToken': token,
-      }, SetOptions(merge: true));
+      if (token != null && user != null) {
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'fcmToken': token,
+        }, SetOptions(merge: true));
+      }
+    } catch (e) {
+      debugPrint('Error in saveTokenToFirestore: $e');
     }
   }
 
   static void _showLocalNotification(RemoteMessage message) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-          'job_alerts',
-          'Job Alerts',
-          importance: Importance.max,
-          priority: Priority.high,
-        );
+      'job_alerts',
+      'Job Alerts',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
     );
 
-    await _localNotifications.show(
-      message.hashCode,
-      message.notification?.title,
-      message.notification?.body,
-      platformChannelSpecifics,
-      payload: json.encode(message.data),
-    );
+    try {
+      await _localNotifications.show(
+        message.hashCode,
+        message.notification?.title,
+        message.notification?.body,
+        platformChannelSpecifics,
+        payload: json.encode(message.data),
+      );
+    } catch (e) {
+      debugPrint('Error showing local notification: $e');
+    }
   }
 
-  static void _handleMessageNavigation(Map<String, dynamic> data) {
+  static void _handleMessageNavigation(Map<String, dynamic> data) async {
     if (data['jobId'] != null && navigatorKey != null) {
-      // Fetch job details and navigate
-      FirebaseFirestore.instance
-          .collection('jobs')
-          .doc(data['jobId'])
-          .get()
-          .then((doc) {
-            if (doc.exists) {
-              final job = JobModel.fromSnapshot(doc);
-              navigatorKey!.currentState?.push(
-                MaterialPageRoute(builder: (_) => JobDetailScreen(job: job)),
-              );
-            }
-          });
+      try {
+        // Fetch job details and navigate
+        final doc = await FirebaseFirestore.instance
+            .collection('jobs')
+            .doc(data['jobId'])
+            .get();
+
+        if (doc.exists) {
+          final job = JobModel.fromSnapshot(doc);
+          navigatorKey!.currentState?.push(
+            MaterialPageRoute(builder: (_) => JobDetailScreen(job: job)),
+          );
+        } else {
+          debugPrint('Job not found for notification navigation');
+        }
+      } catch (e) {
+        debugPrint('Error navigating from notification: $e');
+      }
     }
   }
 }

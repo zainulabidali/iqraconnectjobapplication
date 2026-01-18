@@ -27,7 +27,11 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 
     _bannerAd = BannerAd(
       // adUnitId: 'ca-app-pub-3072484265637122/5836517041',
+      
       adUnitId: 'ca-app-pub-3072484265637122/5836517041',
+
+      // adUnitId: 'ca-app-pub-3940256099942544/6300978111', test id
+
       // 'ca-app-pub-3940256099942544/6300978111', // ✅ TEST banner ID
       size: _adSize!,
       request: const AdRequest(),

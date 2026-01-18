@@ -44,11 +44,11 @@ class JobService {
         .limit(50)
         .snapshots()
         .map((snapshot) {
-          return snapshot.docs
-              .map((d) => JobModel.fromSnapshot(d))
-              .where((job) => job.expiresAt.isAfter(DateTime.now()))
-              .toList();
-        });
+      return snapshot.docs
+          .map((d) => JobModel.fromSnapshot(d))
+          .where((job) => job.expiresAt.isAfter(DateTime.now()))
+          .toList();
+    });
   }
 
   // ✅ FIXED: Filtered jobs (Sorted by postedAt DESC)
@@ -76,7 +76,8 @@ class JobService {
         jobType != 'Both') {
       // Query using the normalized jobType field in Firestore
       // For backward compatibility, we'll use the normalized field
-      query = query.where('jobTypeNormalized', isEqualTo: jobType);
+      query = query.where('jobTypeNormalized',
+          isEqualTo: StringUtils.normalizeAndFix(jobType));
       print("JobService: Applying jobType filter: $jobType");
     }
     if (role != null && role.isNotEmpty) {
@@ -112,10 +113,8 @@ class JobService {
         .orderBy('postedAt', descending: true)
         .snapshots()
         .map((snapshot) {
-          return snapshot.docs
-              .map((doc) => JobModel.fromSnapshot(doc))
-              .toList();
-        });
+      return snapshot.docs.map((doc) => JobModel.fromSnapshot(doc)).toList();
+    });
   }
 
   // Update Job
