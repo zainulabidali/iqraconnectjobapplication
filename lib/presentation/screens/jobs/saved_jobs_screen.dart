@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iqra_connect/core/services/bannerAdWidget.dart';
 import 'package:provider/provider.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../providers/job_provider.dart';
@@ -77,6 +78,8 @@ class SavedJobsScreen extends StatelessWidget {
           );
         },
       ),
+            bottomNavigationBar: BannerAdWidget(),
+
     );
   }
 }

@@ -70,7 +70,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
 
       if (launched) {
         // ✅ SUCCESS → SAFE PLACE for interstitial
-        InterstitialAdHelper.showAd();
+        // InterstitialAdHelper.showAd();
       } else {
         throw 'Could not launch WhatsApp';
       }
@@ -219,7 +219,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
                             if (await canLaunchUrl(callUrl)) {
                               await launchUrl(callUrl);
                               // ✅ SUCCESS → SAFE PLACE for interstitial
-                              InterstitialAdHelper.showAd();
+                              // InterstitialAdHelper.showAd();
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(

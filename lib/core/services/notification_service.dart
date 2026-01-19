@@ -34,7 +34,8 @@ class NotificationService {
 
     // 2. Initialize Local Notifications (for foreground messages)
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    AndroidInitializationSettings('ic_notification');
+
     const InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
 
@@ -103,13 +104,15 @@ class NotificationService {
   }
 
   static void _showLocalNotification(RemoteMessage message) async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'job_alerts',
-      'Job Alerts',
-      importance: Importance.max,
-      priority: Priority.high,
-    );
+   const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+  'job_alerts',
+  'Job Alerts',
+  importance: Importance.max,
+  priority: Priority.high,
+  icon: 'ic_notification', // 🔥 force custom icon
+);
+
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
     );

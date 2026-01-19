@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iqra_connect/core/services/bannerAdWidget.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/job_provider.dart';
@@ -101,6 +102,8 @@ class MyPostedJobsScreen extends StatelessWidget {
         },
         child: const Icon(Icons.add),
       ),
+            bottomNavigationBar: BannerAdWidget(),
+
     );
   }
 

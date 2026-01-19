@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iqra_connect/core/services/bannerAdWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../../../core/constants/locations.dart';
@@ -310,7 +311,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
                 },
               ),
 
-              const SizedBox(height: 48),
+              const SizedBox(height: 28),
               Consumer<JobProvider>(
                 builder: (context, provider, child) {
                   return SizedBox(
@@ -348,11 +349,13 @@ class _PostJobScreenState extends State<PostJobScreen> {
                   );
                 },
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 62),
             ],
           ),
         ),
       ),
+            bottomNavigationBar: BannerAdWidget(),
+
     );
   }
 

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:iqra_connect/core/services/bannerAdWidget.dart';
 import '../../../core/theme/app_theme.dart';
 
 class NotificationsScreen extends StatelessWidget {
@@ -92,6 +93,7 @@ class NotificationsScreen extends StatelessWidget {
           );
         },
       ),
+      bottomNavigationBar: BannerAdWidget(),
     );
   }
 }
