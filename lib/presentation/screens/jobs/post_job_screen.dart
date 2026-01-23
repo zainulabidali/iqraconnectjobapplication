@@ -132,7 +132,8 @@ class _PostJobScreenState extends State<PostJobScreen> {
         if (isEditing) {
           await jobProvider.updateJob(newJob);
           if (mounted) {
-            InterstitialAdHelper.showAd(); // ✅ Show interstitial ad on update
+            // InterstitialAdHelper.showAd(); 
+            // ✅ Show interstitial ad on update
             await Future.delayed(const Duration(seconds: 2));
 
             ScaffoldMessenger.of(context).showSnackBar(
@@ -143,7 +144,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
         } else {
           await jobProvider.postJob(newJob);
           if (mounted) {
-            InterstitialAdHelper.showAd();
+            // InterstitialAdHelper.showAd();
             await Future.delayed(const Duration(seconds: 2));
             
 

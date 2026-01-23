@@ -7,7 +7,7 @@
     <!-- Android 13+ Notification Permission -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" android:required="false"/>
 
-    <application android:name="${applicationName}" android:label="Iqra Connect" android:icon="@mipmap/launcher_icon" android:usesCleartextTraffic="true">
+    <application android:name="${applicationName}" android:label="IQRA" android:icon="@mipmap/ic_launcher" android:usesCleartextTraffic="true">
 
         <meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/notification_color" />
 

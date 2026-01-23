@@ -31,9 +31,33 @@ class LoginScreen extends StatelessWidget {
                 // App Icon
 
                 // const SizedBox(height: 24),
-                Image.asset("assets/Picsart_26-01-10_14-50-50-084.png"),
+                Image.asset("assets/logonew-removebg-preview.png"),
+                // const SizedBox(height: 24),
+                const Text(
+                  'IQRA',
+                  style: TextStyle(
+                    fontSize: 34,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const Text(
+                  ' Connect',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Color.fromARGB(226, 255, 255, 255),
+                  ),
+                ),
 
-                // const SizedBox(height: 8),
+
+
+
+
+                // Title
+
+
+                const SizedBox(height: 8),
 
                 // Subtitle
                 const Text(

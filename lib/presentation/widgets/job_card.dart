@@ -120,7 +120,7 @@ class JobCard extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          "₹ ${job.salary}",
+                          " ₹  ${job.salary}",
                           style: const TextStyle(
                             color: AppTheme.softLavender,
                             fontWeight: FontWeight.bold,
@@ -159,7 +159,7 @@ class JobCard extends StatelessWidget {
                           icon: Icon(
                             isSaved
                                 ? Icons.bookmark_rounded
-                                : Icons.bookmark_outline_rounded,
+                                : Icons.bookmark_add_outlined,
                             color: isSaved
                                 ? AppTheme.softLavender
                                 : Colors.white70,
